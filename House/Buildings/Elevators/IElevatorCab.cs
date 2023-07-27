@@ -1,4 +1,4 @@
-﻿namespace ElevatorControlSystem
+﻿namespace House.Buildings.Elevators
 {
     public interface IElevatorCab
     {

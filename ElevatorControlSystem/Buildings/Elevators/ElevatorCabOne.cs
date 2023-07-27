@@ -1,11 +1,11 @@
-﻿namespace ElevatorControlSystem
+﻿namespace ElevatorControlSystem.Buildings.Elevators
 {
-    public class ElevatorCab : IElevatorCab
+    public class ElevatorCabOne : IElevatorCab
     {
         public int CurrentPosition { get; set; }
         public string Status { get; set; }
 
-        public ElevatorCab()
+        public ElevatorCabOne()
         {
 
         }
@@ -19,9 +19,9 @@
 
         }
 
-        public void CloseDoor() 
-        { 
-        
+        public void CloseDoor()
+        {
+
         }
 
         public void СallingOperator()

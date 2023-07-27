@@ -11,30 +11,19 @@ namespace House
         {
             var buiding = CreateBuilding("Аптека",20);
 
-            Console.WriteLine($"Название здания: {buiding.Name}\n" +
-                $"Количество этажей: {buiding.Floors.Count()}\n" +
-                $"Количество лифтов: {buiding.Elevator.Count()}"
-                );
-            Console.ReadKey();
+            
+            Console.WriteLine(buiding.Floors.Count());
+
             //var host = CreateHostBuilder(args).Build();
             //host.Services.GetRequiredService<>
         }
 
-        private static Build CreateBuilding(string NameBuiding, int SumFloor)
+        private static Build CreateBuilding(string NameBuiding,int SumFloor)
         {
             return new Build
             {
                 Name = NameBuiding,
-                Floors = Floors(SumFloor),
-                Elevator = SumElevator()
-            };
-        }
-        private static List<ElevatorCab> SumElevator()
-        {
-            return new List<ElevatorCab>
-            {
-                new ElevatorCab{MaxWeight = 400},
-                new ElevatorCab{MaxWeight = 200}
+                Floors = Floors(SumFloor)
             };
         }
 
@@ -55,7 +44,7 @@ namespace House
             return Host.CreateDefaultBuilder(args)
                 .ConfigureServices(services =>
                 {
-                    services.AddScoped<IElevatorCab, ElevatorCab>();
+                    services.AddScoped<IElevatorCab, ElevatorCabOne>();
                     services.AddScoped<IFloor, Floor>();
                 });
         }
