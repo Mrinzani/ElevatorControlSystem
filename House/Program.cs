@@ -16,6 +16,7 @@ namespace House
                 $"Количество лифтов: {buiding.Elevator.Count()}"
                 );
             Console.ReadKey();
+
             //var host = CreateHostBuilder(args).Build();
             //host.Services.GetRequiredService<>
         }
