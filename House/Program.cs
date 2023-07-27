@@ -9,11 +9,12 @@ namespace House
     {
         public static void Main(string[] args)
         {
-            var buiding = CreateBuilding("Аптека",20);
+            var building = CreateBuilding("Аптека",20);
 
-            Console.WriteLine($"Название здания: {buiding.Name}\n" +
-                $"Количество этажей: {buiding.Floors.Count()}\n" +
-                $"Количество лифтов: {buiding.Elevator.Count()}"
+            Console.WriteLine($"Название здания: {building.Name}\n" +
+                $"Количество этажей: {building.Floors.Count()}\n" +
+                $"Количество лифтов: {building.Elevator.Count()}\n" +
+                $"{building.Elevator[1].Status}"
                 );
             Console.ReadKey();
 
@@ -51,14 +52,14 @@ namespace House
             return floors;
         }
 
-        private static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureServices(services =>
-                {
-                    services.AddScoped<IElevatorCab, ElevatorCab>();
-                    services.AddScoped<IFloor, Floor>();
-                });
-        }
+        //private static IHostBuilder CreateHostBuilder(string[] args)
+        //{
+        //    return Host.CreateDefaultBuilder(args)
+        //        .ConfigureServices(services =>
+        //        {
+        //            services.AddScoped<IElevatorCab, ElevatorCab>();
+        //            services.AddScoped<IFloor, Floor>();
+        //        });
+        //}
     }
 }
