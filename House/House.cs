@@ -32,8 +32,14 @@ namespace House
                     );
 
 
-            Console.WriteLine($"Первый лифт{building.Floor[4].DisplayElevator(building.Elevator)[0]}" +
-                $"Второй лифт{building.Floor[4].DisplayElevator(building.Elevator)[1]}");
+            Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
+                $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
+
+            building.Elevator[0].CloseDoor();
+            building.Elevator[0].CurrentPosition = 5;
+
+            Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
+                $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
             Console.ReadKey();
         }
         private static Build CreateBuilding(string NameBuiding, int SumFloor)
