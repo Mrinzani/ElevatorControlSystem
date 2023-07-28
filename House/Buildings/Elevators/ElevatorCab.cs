@@ -1,46 +1,41 @@
-﻿using System.ComponentModel;
+﻿using House.Building.Floors;
+using System.ComponentModel;
 
 namespace House.Buildings.Elevators
 {
-    public class ElevatorCab
+    public class ElevatorCab : IElevatorCab
     {
-        private static int _nextId = 1;
-
-        public int Id { get; private set; }
-
         public int CurrentPosition { get; set; }
 
-        public string Status { get; private set; }
+        public StatusElevator Status { get; private set; }
 
         public int MaxWeight { get; set; }
 
-        //private Dictionary<string>
-
         public ElevatorCab()
         {
+            int defaulfPositionElevator = 1;
+            CurrentPosition = defaulfPositionElevator;
             Status = StatusElevator.WorthOpenDoor;
-            Id = _nextId++;
         }
 
         public void ChooseFloorButton()
         {
-
+            return ;
         }
 
-        public void OpenDoor()
+        public bool OpenDoor()
         {
-
+            return true;
         }
 
-        public void CloseDoor()
+        public bool CloseDoor()
         {
-            
-            //if (MovementBetweenDoor())
+            if (NoMovementBetweenDoor()) return true;
+            return false;
         }
 
         public bool СallingOperator()
         {
-            //()
             return true;
         }
 
@@ -51,7 +46,7 @@ namespace House.Buildings.Elevators
 
         public bool NoMovementBetweenDoor()
         {
-            return false;
+            return true;
         }
 
         public enum StatusElevator
