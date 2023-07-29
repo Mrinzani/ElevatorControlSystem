@@ -27,6 +27,8 @@ namespace House.Buildings.Elevators
             if(CurrentPosition== 1) 
 
             Status = StatusElevator.CloseDoor;
+
+
             Status = StatusElevator.MoveUp;
 
             return true;
