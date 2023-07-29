@@ -27,43 +27,28 @@ namespace House
             Console.WriteLine($"Название здания: {building.Name}\n" +
                     $"Количество этажей: {building.Floor.Count()}\n" +
                     $"Количество лифтов: {building.Elevator.Count()}\n" +
-                    $"Статус первого лифта{building.Elevator[1].Status}\n" +
-                    $"Статус второго лифта{building.Elevator[1].Status}\n"
+                    $"Статус первого лифта: {building.Elevator[0].GetStatus()}\n" +
+                    $"Статус второго лифта: {building.Elevator[1].GetStatus()}\n"
                     );
-            building.Elevator[0].PressFloorButton(4);
-            //foreach(var elevator in _build.Elevator)
-            //{
-            //    if(elevator.Status == ElevatorCab.StatusElevator.WorthOpenDoor)
-            //    {
-            //        building.Floor[5].CallElevatorButton(elevator);
-            //    }
-            //    else
-            //    {
-            //        //elevator.GetStatus();
-            //    }
-            //}
-            
 
+            CallLift(building, 5);
 
+            Thread.Sleep(100);//Задержка нажатия второй кнопки
 
-            //Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
-            //    $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
+            CallLift(building, 10);
 
-            //building.Floor[4].CallElevatorButton();
+            Thread.Sleep(100);//имитация нажатия третьей кнопки
 
-            //while (building.Elevator[0].CurrentPosition == 4)
-            //{
-            //    Console.WriteLine(building.Elevator[0].CurrentPosition);
-            //}
-
-
-            Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
-                $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
-
-            building.Elevator[1].PressFloorButton(1);
+            CallLift(building, 15);
 
             Console.ReadKey();
         }
+
+        private async Task CallLift(Build building, int floor)
+        {
+            await building.Floor[floor].CallElevatorButton(building.Elevator);
+        }
+    
         private static Build CreateBuilding(string NameBuiding, int SumFloor)
         {
             return new Build
@@ -73,12 +58,13 @@ namespace House
                 Elevator = SumElevator()
             };
         }
+
         private static List<ElevatorCab> SumElevator()
         {
             return new List<ElevatorCab>
             {
-                new ElevatorCab{MaxWeight = 400},
-                new ElevatorCab{MaxWeight = 200}
+                new ElevatorCab{Id = 1, MaxWeight = 400},
+                new ElevatorCab{Id = 2, MaxWeight = 200}
             };
         }
 
@@ -93,8 +79,5 @@ namespace House
 
             return floors;
         }
-
-
-
     }
 }

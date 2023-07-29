@@ -7,8 +7,7 @@ namespace House.Buildings.Elevators
     {
         int CurrentPosition { get; }
         StatusElevator Status { get; }
-        void PressFloorButton(int floor);
-        ElevatorCab ChooseFloorButton(int floor);
+        Task<ElevatorCab> PressFloorButton(int floor);
         bool OpenDoor();
         bool CloseDoor();
         bool СallingOperator();
