@@ -3,13 +3,14 @@ using House.Buildings.Elevators;
 
 namespace House.Building.Floors
 {
-    public class Floor :IFloor
+    public class Floor : IFloor
     {
         public int Number { get; set; }
         public bool StatusButton { get; set; }
-        public void CallElevatorButton()
+        public void CallElevatorButton(ElevatorCab elevatorcab)
         {
-            
+            Console.WriteLine($"Вызов {elevatorcab} лифта");
+
         }
         
         public List<int> DisplayElevator(List<ElevatorCab> elevators)

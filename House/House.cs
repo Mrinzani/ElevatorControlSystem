@@ -30,16 +30,38 @@ namespace House
                     $"Статус первого лифта{building.Elevator[1].Status}\n" +
                     $"Статус второго лифта{building.Elevator[1].Status}\n"
                     );
+            building.Elevator[0].PressFloorButton(4);
+            //foreach(var elevator in _build.Elevator)
+            //{
+            //    if(elevator.Status == ElevatorCab.StatusElevator.WorthOpenDoor)
+            //    {
+            //        building.Floor[5].CallElevatorButton(elevator);
+            //    }
+            //    else
+            //    {
+            //        //elevator.GetStatus();
+            //    }
+            //}
+            
+
+
+
+            //Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
+            //    $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
+
+            //building.Floor[4].CallElevatorButton();
+
+            //while (building.Elevator[0].CurrentPosition == 4)
+            //{
+            //    Console.WriteLine(building.Elevator[0].CurrentPosition);
+            //}
 
 
             Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
                 $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
 
-            building.Elevator[0].CloseDoor();
-            building.Elevator[0].CurrentPosition = 5;
+            building.Elevator[1].PressFloorButton(1);
 
-            Console.WriteLine($"Первый лифт на {building.Floor[4].DisplayElevator(building.Elevator)[0]} этаже\n" +
-                $"Второй лифт на {building.Floor[4].DisplayElevator(building.Elevator)[1]} этаже");
             Console.ReadKey();
         }
         private static Build CreateBuilding(string NameBuiding, int SumFloor)

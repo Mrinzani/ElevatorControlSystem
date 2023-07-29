@@ -7,11 +7,13 @@ namespace House.Buildings.Elevators
     {
         int CurrentPosition { get; }
         StatusElevator Status { get; }
-        void ChooseFloorButton();
+        void PressFloorButton(int floor);
+        ElevatorCab ChooseFloorButton(int floor);
         bool OpenDoor();
         bool CloseDoor();
         bool СallingOperator();
-        bool MovementBetweenDoor();
-        bool NoMovementBetweenDoor();
+        ElevatorCab MovementBetweenDoor();
+        ElevatorCab NoMovementBetweenDoor();
+        string GetStatus();
     }
 }
