@@ -1,5 +1,4 @@
-﻿using House.Buildings;
-using House.Buildings.Elevators;
+﻿using House.Buildings.Elevators;
 
 namespace House.Building.Floors
 {
@@ -27,7 +26,6 @@ namespace House.Building.Floors
                         }));
                         break;
                     }
-                    
                 }
                 if (tasks.Count > 0)
                 {
@@ -36,17 +34,17 @@ namespace House.Building.Floors
             }
             return null;
         }
-        
-        //public List<int> DisplayElevator(List<ElevatorCab> elevators)
-        //{
-        //    List<int> list = new List<int>();
 
-        //    foreach(var elevator in elevators)
-        //    {
-        //        list.Add(elevator.CurrentPosition);
-        //    }
+        public List<int> DisplayElevator(List<ElevatorCab> elevators)
+        {
+            List<int> list = new List<int>();
 
-        //    return list;
-        //}
+            foreach (var elevator in elevators)
+            {
+                list.Add(elevator.CurrentPosition);
+            }
+
+            return list;
+        }
     }
 }

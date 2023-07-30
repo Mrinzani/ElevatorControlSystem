@@ -22,7 +22,7 @@ namespace House
                     services.AddTransient<IElevatorCab, ElevatorCab>();
                     services.AddTransient<IFloor, Floor>();
                     services.AddTransient<IBuild, Build>();
-                    services.AddScoped<House>();
+                    services.AddSingleton<House>();
                 });
         }
     }

@@ -1,5 +1,4 @@
-﻿using House.Building.Floors;
-using static House.Buildings.Elevators.ElevatorCab;
+﻿using static House.Buildings.Elevators.ElevatorCab;
 
 namespace House.Buildings.Elevators
 {

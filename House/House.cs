@@ -1,54 +1,127 @@
 ﻿using House.Building.Floors;
-using House.Buildings;
 using House.Buildings.Elevators;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace House
 {
     public class House
     {
-        private readonly IBuild _build;
-        private readonly IFloor _floor;
-
-        public House(IBuild build, IFloor floor) 
-        { 
-            _build = build;
-            _floor = floor;
+        private readonly Random _random;
+        private readonly Build _building;
+        private SemaphoreSlim _semaphoreSlim;
+        
+        public House() 
+        {
+            int maxTask = 2;
+            int maxFloors = 20;
+            _building = CreateBuilding("Многоквартирный дом", maxFloors);
+            _semaphoreSlim = new SemaphoreSlim(maxTask);
+            _random = new Random();
         }
 
         public void Start()
         {
-            var building = CreateBuilding("Аптека", 20);
+            while (true)
+            {
+                Console.WriteLine("Введите этаж на котором находитесь");
 
-            Console.WriteLine($"Название здания: {building.Name}\n" +
-                    $"Количество этажей: {building.Floor.Count()}\n" +
-                    $"Количество лифтов: {building.Elevator.Count()}\n" +
-                    $"Статус первого лифта: {building.Elevator[0].GetStatus()}\n" +
-                    $"Статус второго лифта: {building.Elevator[1].GetStatus()}\n"
-                    );
+                int currentFloor = InputFloor();
 
-            CallLift(building, 5);
+                if (currentFloor > _building.Floor.Count)
+                {
+                    Console.WriteLine("Данного этажа не существует");
+                    continue;
+                }
 
-            Thread.Sleep(100);//Задержка нажатия второй кнопки
+                Console.WriteLine("\nДисплей");
 
-            CallLift(building, 10);
+                foreach (var floor in _building.Elevator)
+                {
+                    Console.WriteLine($"Лифт {floor.Id} находится на {floor.CurrentPosition} этаже.");
+                }
 
-            Thread.Sleep(100);//имитация нажатия третьей кнопки
+                Console.WriteLine("\nВызвать лифт? y/n");
+                string callLift = Console.ReadLine();
 
-            CallLift(building, 15);
+                if (callLift != "y") continue;
 
-            Console.ReadKey();
+                RunCallLiftAsync(currentFloor);
+                //Thread.Sleep(1);
+                //RunCallLiftAsync(5);
+                //Thread.Sleep(1);
+                //RunCallLiftAsync(7);
+
+                //Console.ReadKey();
+                //if (lift.IsCompleted)
+                //{
+                //    if (currentFloor == 1)
+                //    {
+                //        Console.WriteLine("Выберете этаж на который хотите подняться");
+
+                //        foreach (Floor floor in _building.Floor)
+                //        {
+                //            if (floor.Number > currentFloor)
+                //            {
+                //                Console.WriteLine(floor.Number);
+                //            }
+                //        }
+                //    }
+
+                //    else if (currentFloor > 1)
+                //    {
+                //        Console.WriteLine("Выберете этаж на который хотите спуститься");
+                //        Console.ReadLine();
+                //    }
+                //}
+            }
         }
 
-        private async Task CallLift(Build building, int floor)
+        private async Task RunCallLiftAsync(int currentFloor)
         {
-            await building.Floor[floor].CallElevatorButton(building.Elevator);
+            await _semaphoreSlim.WaitAsync();
+            try
+            {
+                await _building.Floor[currentFloor].CallElevatorButton(_building.Elevator);
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
         }
-    
+
+        private async Task RandomEvent()
+        {
+            int chanceEvent = _random.Next(0, 100);
+            if (!(chanceEvent <= 20)) return;
+
+            Console.WriteLine("Ещё один житель дома вызвал лифт");
+            Console.WriteLine("Введите этаж на котором житель вызвал лифт");
+            int currentFloor = InputFloor();
+
+            await RunCallLiftAsync(currentFloor);
+        }
+
+        private int InputFloor(int defaultFloor = -1)
+        {
+            Console.Write("\nЭтаж: ");
+
+            string floor = Console.ReadLine();
+
+            bool parseResult = int.TryParse(floor, out int currentFloor);
+
+            if(!parseResult) return defaultFloor;
+
+            return currentFloor;
+        }
+
+        //private Task CallLift( int floor)
+        //{
+        //    return _building.Floor[floor].CallElevatorButton(_building.Elevator);
+        //}
+
         private static Build CreateBuilding(string NameBuiding, int SumFloor)
         {
             return new Build
