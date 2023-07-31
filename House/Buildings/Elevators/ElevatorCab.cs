@@ -13,9 +13,8 @@ namespace House.Buildings.Elevators
         private bool _movementDoor{ get; set;}
         private int _nextPosition { get; set; }
 
-        public ElevatorCab()
+        public ElevatorCab(int defaulfPositionElevator)
         {
-            int defaulfPositionElevator = 1;
             CurrentPosition = defaulfPositionElevator;
             Status = StatusElevator.WorthOpenDoor;
         }

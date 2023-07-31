@@ -17,10 +17,11 @@ namespace House.Buildings.CreateBuild
 
         private static List<ElevatorCab> SumElevator()
         {
+            int defaultPosition = 1;
             return new List<ElevatorCab>
             {
-                new ElevatorCab{Id = 1, MaxWeight = 400},
-                new ElevatorCab{Id = 2, MaxWeight = 200}
+                new ElevatorCab(defaultPosition){Id = 1, MaxWeight = 400},
+                new ElevatorCab(defaultPosition){Id = 2, MaxWeight = 200}
             };
         }
 

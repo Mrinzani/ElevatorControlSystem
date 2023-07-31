@@ -20,6 +20,7 @@ namespace House
         {
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Введите этаж на котором находитесь");
 
                 int currentFloor = InputFloor();
@@ -33,7 +34,7 @@ namespace House
                 Console.Clear();
                 WatchDisplay();
 
-                bool isTrue = CheckOneFloor(currentFloor).Result;
+                bool isTrue = CheckOneFloor(currentFloor);
 
                 if (isTrue)
                 {
@@ -49,17 +50,19 @@ namespace House
                     continue;
 
                 CheckAllFloor(currentFloor);
-                Console.ReadLine();
+
+                Console.WriteLine("Нажмите пробел.....");
+                Console.ReadKey();
             }
         }
 
-        private async Task CheckAllFloor(int currentFloor)
+        private void CheckAllFloor(int currentFloor)
         {
             var resultRunCallLift = RunCallLift(currentFloor);
             ChoiceFloor(currentFloor, resultRunCallLift);
         }
 
-        private async Task<bool> CheckOneFloor(int currentFloor)
+        private bool CheckOneFloor(int currentFloor)
         {
             int randomAttempt = 1;
             foreach (var elevator in _building.Elevator)
@@ -116,8 +119,6 @@ namespace House
             {
                 Console.WriteLine("\nВыберете этаж на который хотите спуститься");
 
-                int lastFloor = currentFloor - 1;
-
                 foreach (Floor floor in _building.Floor)
                 {
                     if (floor.Number < currentFloor)
@@ -125,6 +126,7 @@ namespace House
                         Console.Write($"{floor.Number} ");
                     }
                 }
+
                 Console.WriteLine();
                 int parseFloor = InputFloor(minFloor);
                 RunCallLift(parseFloor, resultRunCallLift);
@@ -141,18 +143,10 @@ namespace House
             return _building.Floor[currentFloor].CallElevatorButton(resultRunCallLift);
         }
 
-        private bool RandomEvent(int chanceinPercent)
-        {
-            int chanceEvent = _random.Next(0, 100);
-            return chanceEvent <= chanceinPercent;
-        }
-
         private int InputFloor(int defaultFloor = -1)
         {
             Console.Write("\nЭтаж: ");
-
             string floor = Console.ReadLine();
-
             bool parseResult = int.TryParse(floor, out int currentFloor);
 
             if(!parseResult) return defaultFloor;
