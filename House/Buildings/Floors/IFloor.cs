@@ -6,7 +6,8 @@ namespace House.Building.Floors
     {
         int Number { get; set; }
         bool StatusButton { get; set; }
-        Task<ElevatorCab> CallElevatorButton(List<ElevatorCab> elevators);
-        //List<int> DisplayElevator(List<ElevatorCab> elevators);
+        ElevatorCab CallElevatorButton(List<ElevatorCab> elevators);
+        ElevatorCab CallElevatorButton(ElevatorCab elevator);
+        List<int> DisplayElevator(List<ElevatorCab> elevators);
     }
 }

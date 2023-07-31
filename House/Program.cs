@@ -1,5 +1,6 @@
 ﻿using House.Building.Floors;
 using House.Buildings;
+using House.Buildings.CreateBuild;
 using House.Buildings.Elevators;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,6 +23,7 @@ namespace House
                     services.AddTransient<IElevatorCab, ElevatorCab>();
                     services.AddTransient<IFloor, Floor>();
                     services.AddTransient<IBuild, Build>();
+                    services.AddScoped<ICreateBuild, CreateBuild>();
                     services.AddSingleton<House>();
                 });
         }

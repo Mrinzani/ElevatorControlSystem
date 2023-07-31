@@ -1,4 +1,6 @@
 ﻿using House.Buildings.Elevators;
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace House.Building.Floors
 {
@@ -7,29 +9,26 @@ namespace House.Building.Floors
         public int Number { get; set; }
         public bool StatusButton { get; set; }
 
-        public async Task<ElevatorCab> CallElevatorButton(List<ElevatorCab> elevators)
+        public ElevatorCab CallElevatorButton(ElevatorCab elevator)
+        {
+            if (elevator== null) return null;
+
+            if (elevator.Status == ElevatorCab.StatusElevator.WorthOpenDoor)
+            {
+                return elevator.PressFloorButton(Number);
+            }
+            return null;
+        }
+
+        public ElevatorCab CallElevatorButton(List<ElevatorCab> elevators)
         {
             if (elevators.Count == 0) return null;
 
-            var tasks = new List<Task<ElevatorCab>>();
-
-            while (true)
+            foreach (var elevator in elevators)
             {
-                foreach (var elevator in elevators)
+                if (elevator.Status == ElevatorCab.StatusElevator.WorthOpenDoor)
                 {
-                    if (elevator.Status == ElevatorCab.StatusElevator.WorthOpenDoor)
-                    {
-                        tasks.Add(Task.Run(async () =>
-                        {
-                            var pressButton = await elevator.PressFloorButton(Number);
-                            return pressButton;
-                        }));
-                        break;
-                    }
-                }
-                if (tasks.Count > 0)
-                {
-                    break;
+                    return elevator.PressFloorButton(Number);
                 }
             }
             return null;

@@ -5,8 +5,9 @@ namespace House.Buildings.Elevators
     public interface IElevatorCab
     {
         int CurrentPosition { get; }
+        public string ElevatorStatus { get; }
         StatusElevator Status { get; }
-        Task<ElevatorCab> PressFloorButton(int floor);
+        ElevatorCab PressFloorButton(int floor);
         bool OpenDoor();
         bool CloseDoor();
         bool СallingOperator();

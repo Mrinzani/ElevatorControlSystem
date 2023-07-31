@@ -3,17 +3,16 @@ using System.ComponentModel;
 
 namespace House.Buildings.Elevators
 {
-    public delegate void StatusChangedEventHandler(object sender, EventArgs e);
-
     public class ElevatorCab : IElevatorCab
     {
         public int Id { get; set; }
         public int CurrentPosition { get; private set; }
+        public string ElevatorStatus {get; private set;}
         public StatusElevator Status { get; private set; }
         public int MaxWeight { get; set; }
-        private bool movementDoor{ get; set;}
-        private int nextPosition { get; set; }
-        
+        private bool _movementDoor{ get; set;}
+        private int _nextPosition { get; set; }
+
         public ElevatorCab()
         {
             int defaulfPositionElevator = 1;
@@ -21,72 +20,73 @@ namespace House.Buildings.Elevators
             Status = StatusElevator.WorthOpenDoor;
         }
 
-        public async Task SelectFloor(List<Floor> floors, int nextFloor)
+        public void SelectFloor(List<Floor> floors, int nextFloor)
         {
-            //if(CurrentPosition == nextFloor)
-            //{
-            //    await Console.Out.WriteLineAsync($"Вы уже находитесь на текущем этаже");
-            //    return;
-            //}
+            if (CurrentPosition == nextFloor)
+            {
+                Console.WriteLine($"Вы уже находитесь на текущем этаже");
+                return;
+            }
 
-            //if(!(CurrentPosition == 1))
-            //{
-            //    await Console.Out.WriteLineAsync($"Доступные к выбору этажи: ");
-            //    foreach (var floor in floors)
-            //    {
-            //        if (floor.Number < nextFloor)
-            //        {
-            //            await Console.Out.WriteLineAsync($"{floor.Number}");
-            //        }
-            //    }
-            //}
+            if (!(CurrentPosition == 1))
+            {
+                Console.WriteLine($"Доступные к выбору этажи: ");
+                foreach (var floor in floors)
+                {
+                    if (floor.Number < nextFloor)
+                    {
+                        Console.WriteLine($"{floor.Number}");
+                    }
+                }
+            }
 
-            //foreach (var floor in floors)
-            //{
-            //    await Console.Out.WriteLineAsync($"{floor.Number}");
-            //}
+            foreach (var floor in floors)
+            {
+                Console.WriteLine($"{floor.Number}");
+            }
         }
 
-        public async Task<ElevatorCab> PressFloorButton(int floor)
+        public ElevatorCab PressFloorButton(int floor)
         {
+            int delay = 500;
             floor = floor - 1;
             int currentFloor = CurrentPosition;
 
             if (currentFloor == floor)
             {
-                await Console.Out.WriteLineAsync($"Лифт {Id} на {floor} этаже {GetStatus()}.\n");
-                return this;
+                Console.WriteLine($"Лифт {Id} на {floor} этаже {GetStatus()}.\n");
+                return null;
             }
-
+            Thread.Sleep(delay);
             Status = StatusElevator.CloseDoor;
-            await Console.Out.WriteLineAsync($"Лифт {Id} {GetStatus()}\n");
+            Console.WriteLine($"Лифт {Id} {GetStatus()}\n");
+            Thread.Sleep(delay);
             Status = currentFloor < floor ? Status = StatusElevator.MoveUp : StatusElevator.MoveDown;
-            await Console.Out.WriteLineAsync($"Лифт {Id} {GetStatus()} с {currentFloor} этажа на {floor} этаж.\n");
+            Console.WriteLine($"Лифт {Id} {GetStatus()} с {currentFloor} этажа на {floor} этаж.\n");
 
-            int delayInSeconds = 1;
-
+            
             int step = currentFloor < floor ? 1 : -1;
 
             while (currentFloor != floor)
             {
-                Thread.Sleep(delayInSeconds * 1000);
-                await Console.Out.WriteLineAsync($"Лифт {Id} проезжает {currentFloor} этаж.\n");
+                Thread.Sleep(delay);
+                Console.WriteLine($"Лифт {Id} проезжает {currentFloor} этаж.\n");
                 currentFloor += step;
             }
 
             CurrentPosition = currentFloor;
-            
             Status = StatusElevator.OpenDoor;
-            await Console.Out.WriteLineAsync($"Лифт {Id} прибыл на {currentFloor} этаж и {GetStatus()}.\n");
+            Thread.Sleep(delay);
+            Console.WriteLine($"Лифт {Id} прибыл на {currentFloor} этаж и {GetStatus()}.\n");
+            Thread.Sleep(delay);
             Status = StatusElevator.WorthOpenDoor;
-            await Console.Out.WriteLineAsync($"Лифт {Id} {GetStatus()}.\n");
-            
+            Console.WriteLine($"Лифт {Id} {GetStatus()}.\n");
             return this;
         }
 
         public bool OpenDoor()
         {
-            if(CurrentPosition == nextPosition)
+            if(CurrentPosition == _nextPosition)
             {
                 return true;
             }
@@ -95,7 +95,7 @@ namespace House.Buildings.Elevators
 
         public bool CloseDoor()
         {
-            if (!movementDoor) return true;
+            if (!_movementDoor) return true;
             return false;
         }
 
@@ -106,13 +106,13 @@ namespace House.Buildings.Elevators
 
         public ElevatorCab MovementBetweenDoor()
         {
-            movementDoor = true;
+            _movementDoor = true;
             return this;
         }
 
         public ElevatorCab NoMovementBetweenDoor()
         {
-            movementDoor = false;
+            _movementDoor = false;
             return this;
         }
 
