@@ -87,26 +87,35 @@ namespace House
         private void ChoiceFloor(int currentFloor, ElevatorCab resultRunCallLift)
         {
             int minFloor = 1;
+            int maxFloor = 0;
 
             switch (currentFloor)
             {
                 case 1:
                     Console.WriteLine("\nВыберете этаж на который хотите подняться");
-                    PrintFloor(currentFloor, MoveLift.Up);
+                    maxFloor = PrintFloor(currentFloor, MoveLift.Up);
                     break;
                 default:
                     Console.WriteLine("\nВыберете этаж на который хотите спуститься");
-                    PrintFloor(currentFloor, MoveLift.Down);
+                    maxFloor = PrintFloor(currentFloor, MoveLift.Down);
                     break;
             }
 
             Console.WriteLine();
             int parseFloor = InputFloor(minFloor);
+
+            if (maxFloor < parseFloor)
+            {
+                Console.WriteLine("Пожалуйста выберите корректный этаж из списка");
+                return;
+            }
+            
             RunCallLift(parseFloor, resultRunCallLift);
         }
 
-        private void PrintFloor(int currentFloor, MoveLift moveLift)
+        private int PrintFloor(int currentFloor, MoveLift moveLift)
         {
+            int maxFloor = 0;
             switch (moveLift) 
             {
                 case MoveLift.Up:
@@ -117,16 +126,18 @@ namespace House
                             Console.Write($"{floor.Number} ");
                         }
                     }
-                    break;
+                    maxFloor = _building.Floor.Count();
+                    return maxFloor;
                 default:
                     foreach (Floor floor in _building.Floor)
                     {
                         if (floor.Number < currentFloor)
                         {
                             Console.Write($"{floor.Number} ");
+                            maxFloor = maxFloor < floor.Number ? floor.Number : maxFloor;
                         }
                     }
-                    break;
+                    return maxFloor;
             }
         }
 
