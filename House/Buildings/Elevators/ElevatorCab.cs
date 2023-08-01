@@ -48,7 +48,6 @@ namespace House.Buildings.Elevators
         public ElevatorCab PressFloorButton(int floor)
         {
             int delay = 500;
-            floor = floor - 1;
             int currentFloor = CurrentPosition;
 
             if (currentFloor == floor)
@@ -63,7 +62,6 @@ namespace House.Buildings.Elevators
             Status = currentFloor < floor ? Status = StatusElevator.MoveUp : StatusElevator.MoveDown;
             Console.WriteLine($"Лифт {Id} {GetStatus()} с {currentFloor} этажа на {floor} этаж.\n");
 
-            
             int step = currentFloor < floor ? 1 : -1;
 
             while (currentFloor != floor)

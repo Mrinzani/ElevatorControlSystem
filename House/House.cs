@@ -9,7 +9,7 @@ namespace House
         private readonly Random _random;
         private readonly Build _building;
 
-        public House(ICreateBuild createBuild) 
+        public House(ICreateBuild createBuild)
         {
             int maxFloors = 20;
             _building = createBuild.Building("Многоквартирный дом", maxFloors);
@@ -38,6 +38,7 @@ namespace House
 
                 if (isTrue)
                 {
+                    Console.WriteLine("Нажмите пробел.....");
                     Console.ReadKey();
                     continue;
                 }
@@ -64,25 +65,11 @@ namespace House
 
         private bool CheckOneFloor(int currentFloor)
         {
-            int randomAttempt = 1;
             foreach (var elevator in _building.Elevator)
             {
-                if (elevator.CurrentPosition == currentFloor)
-                {
-                    bool random = _random.Next(2) == 0;
-                    if (randomAttempt != 0)
-                    {
-                        if (random)
-                        {
-                            ChoiceFloor(currentFloor, elevator);
-                            return true;
-                        }
-                        randomAttempt--;
-                        return false;
-                    }
-                    ChoiceFloor(currentFloor, elevator);
-                    return true;
-                }
+                if (elevator.CurrentPosition != currentFloor) continue;
+                ChoiceFloor(currentFloor, elevator);
+                return true;
             }
             return false;
         }
@@ -90,6 +77,7 @@ namespace House
         private void WatchDisplay()
         {
             Console.WriteLine("Дисплей");
+
             foreach (var floor in _building.Elevator)
             {
                 Console.WriteLine($"Лифт {floor.Id} находится на {floor.CurrentPosition} этаже.");
@@ -100,47 +88,56 @@ namespace House
         {
             int minFloor = 1;
 
-            if (currentFloor == 1)
+            switch (currentFloor)
             {
-                Console.WriteLine("\nВыберете этаж на который хотите подняться");
-
-                foreach (Floor floor in _building.Floor)
-                {
-                    if (floor.Number > currentFloor)
-                    {
-                        Console.Write($"{floor.Number} ");
-                    }
-                }
-                Console.WriteLine();
-                int parseFloor = InputFloor(minFloor);
-                RunCallLift(parseFloor, resultRunCallLift);
+                case 1:
+                    Console.WriteLine("\nВыберете этаж на который хотите подняться");
+                    PrintFloor(currentFloor, MoveLift.Up);
+                    break;
+                default:
+                    Console.WriteLine("\nВыберете этаж на который хотите спуститься");
+                    PrintFloor(currentFloor, MoveLift.Down);
+                    break;
             }
-            else
+
+            Console.WriteLine();
+            int parseFloor = InputFloor(minFloor);
+            RunCallLift(parseFloor, resultRunCallLift);
+        }
+
+        private void PrintFloor(int currentFloor, MoveLift moveLift)
+        {
+            switch (moveLift) 
             {
-                Console.WriteLine("\nВыберете этаж на который хотите спуститься");
-
-                foreach (Floor floor in _building.Floor)
-                {
-                    if (floor.Number < currentFloor)
+                case MoveLift.Up:
+                    foreach (Floor floor in _building.Floor)
                     {
-                        Console.Write($"{floor.Number} ");
+                        if (floor.Number > currentFloor)
+                        {
+                            Console.Write($"{floor.Number} ");
+                        }
                     }
-                }
-
-                Console.WriteLine();
-                int parseFloor = InputFloor(minFloor);
-                RunCallLift(parseFloor, resultRunCallLift);
+                    break;
+                default:
+                    foreach (Floor floor in _building.Floor)
+                    {
+                        if (floor.Number < currentFloor)
+                        {
+                            Console.Write($"{floor.Number} ");
+                        }
+                    }
+                    break;
             }
         }
 
         private ElevatorCab RunCallLift(int currentFloor)
         {
-            return _building.Floor[currentFloor].CallElevatorButton(_building.Elevator);
+            return _building.Floor[currentFloor-1].CallElevatorButton(_building.Elevator);
         }
 
         private ElevatorCab RunCallLift(int currentFloor, ElevatorCab resultRunCallLift)
         {
-            return _building.Floor[currentFloor].CallElevatorButton(resultRunCallLift);
+            return _building.Floor[currentFloor-1].CallElevatorButton(resultRunCallLift);
         }
 
         private int InputFloor(int defaultFloor = -1)
@@ -149,9 +146,15 @@ namespace House
             string floor = Console.ReadLine();
             bool parseResult = int.TryParse(floor, out int currentFloor);
 
-            if(!parseResult) return defaultFloor;
+            if (!parseResult) return defaultFloor;
 
             return currentFloor;
+        }
+
+        enum MoveLift
+        {
+            Up,
+            Down,
         }
     }
 }
